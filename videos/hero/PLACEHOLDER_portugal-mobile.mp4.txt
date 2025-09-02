@@ -1,0 +1,19 @@
+PLACEHOLDER FILE: portugal-mobile.mp4
+
+Replace this with your mobile-optimized hero video:
+- Format: MP4 (H.264)
+- Resolution: 720x1280 (portrait) or 720x720 (square)
+- Duration: 10-30 seconds (seamless loop) 
+- Size: Under 3MB (mobile optimization)
+- Content: Mobile-friendly Portugal footage
+
+Mobile-specific considerations:
+- Portrait orientation works best on phones
+- Ensure important visual elements are centered
+- Test on actual mobile devices
+- Consider slower mobile connections
+
+When you replace this file:
+1. Delete this .txt file
+2. Add your portugal-mobile.mp4 file  
+3. Test on mobile browsers
