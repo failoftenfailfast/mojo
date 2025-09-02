@@ -1,0 +1,5 @@
+videos/hero/backup/
+videos/hero/*.mp4
+!videos/hero/compressed/*.mp4
+.DS_Store
+
