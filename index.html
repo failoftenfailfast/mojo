@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOJO - Find Your Mojo in Portugal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FFF8F0; /* Creamy White */
+            color: #333333; /* Charcoal Gray */
+        }
+        .hero-bg {
+            background-image: url('https://images.unsplash.com/photo-1572268452433-f1f33a1a5a1f?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #FF6F61, #FF4500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #FF6F61, #FF4500);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -10px rgba(255, 111, 97, 0.5);
+        }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        /* Custom animation for quiz */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        /* Spinner for loading states */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #FF6F61;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="absolute top-0 left-0 right-0 z-10 py-6 px-4 md:px-8">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-black text-white">MOJO</h1>
+            <nav class="hidden md:flex space-x-8 items-center">
+                <a href="#" class="text-white hover:text-gray-200">Services</a>
+                <a href="#" class="text-white hover:text-gray-200">Properties</a>
+                <a href="#" class="text-white hover:text-gray-200">About Us</a>
+                <a href="#" class="text-white bg-white/20 backdrop-blur-sm py-2 px-4 rounded-full hover:bg-white/30">Contact</a>
+            </nav>
+            <button class="md:hidden text-white text-3xl">☰</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-bg h-screen flex items-center justify-center text-white relative">
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="relative z-10 text-center px-4">
+            <h2 class="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-tight">Find Your Mojo</h2>
+            <h3 class="text-5xl md:text-8xl font-black uppercase tracking-tighter gradient-text">in Portugal.</h3>
+            <p class="mt-4 max-w-2xl mx-auto text-lg md:text-xl text-gray-200">Your story begins here. Discover curated properties and unlock the vibrant life you've always dreamed of.</p>
+            <button id="startQuizBtn" class="mt-8 btn-primary text-white font-bold py-4 px-8 rounded-full text-lg">
+                What's Your Portugal Dream?
+            </button>
+        </div>
+    </section>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center hidden z-50 p-4">
+        <div id="quizContent" class="bg-white rounded-2xl shadow-2xl p-8 md:p-12 w-full max-w-2xl text-center relative">
+            <!-- This content will be replaced by JS -->
+        </div>
+    </div>
+
+    <!-- Services Section -->
+    <section class="py-20 md:py-32 bg-cream-100 px-4">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold">Your Portugal Journey</h2>
+            <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">We're more than realtors. We're your partners in building a new life, every step of the way.</p>
+            
+            <div class="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+                <!-- Service Card 1 -->
+                <div class="card bg-white p-8 rounded-2xl shadow-lg text-left">
+                    <div class="text-4xl font-black gradient-text">01</div>
+                    <h3 class="text-2xl font-bold mt-4">Finding Your Perfect Plot</h3>
+                    <p class="mt-2 text-gray-600">From sun-drenched city lofts to serene countryside villas, we use our deep local knowledge to find properties that match your soul.</p>
+                </div>
+                <!-- Service Card 2 -->
+                <div class="card bg-white p-8 rounded-2xl shadow-lg text-left">
+                    <div class="text-4xl font-black gradient-text">02</div>
+                    <h3 class="text-2xl font-bold mt-4">Bringing Vision to Life</h3>
+                    <p class="mt-2 text-gray-600">Our expert renovation and design teams transform spaces into stunning, personalized homes that reflect your unique style.</p>
+                </div>
+                <!-- Service Card 3 -->
+                <div class="card bg-white p-8 rounded-2xl shadow-lg text-left">
+                    <div class="text-4xl font-black gradient-text">03</div>
+                    <h3 class="text-2xl font-bold mt-4">Seamless Investment</h3>
+                    <p class="mt-2 text-gray-600">We handle it all: legal, financing, and property management, ensuring your investment is profitable and stress-free.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Properties Section -->
+    <section class="py-20 md:py-32 px-4">
+        <div class="container mx-auto">
+            <div class="text-center">
+                <h2 class="text-4xl md:text-5xl font-bold">Featured Stories</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">These aren't just houses, they're the start of a new chapter. Which one is yours?</p>
+            </div>
+
+            <div class="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Property 1 -->
+                <div class="card bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop" alt="The Alfama Artist's Loft" class="w-full h-64 object-cover">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold" data-name="The Alfama Artist's Loft">The Alfama Artist's Loft</h3>
+                        <p class="text-gray-600 mt-2" data-location="Lisbon">Lisbon</p>
+                        <div class="ai-description text-gray-700 mt-4 flex-grow min-h-[100px]">Click the button below to generate a story...</div>
+                        <p class="mt-4 font-semibold text-lg gradient-text">€450,000</p>
+                        <button class="generate-story-btn w-full mt-4 bg-gray-200 text-gray-800 font-bold py-3 px-6 rounded-full hover:bg-gray-300 transition-colors">✨ Generate Story</button>
+                    </div>
+                </div>
+                <!-- Property 2 -->
+                <div class="card bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col">
+                    <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=2070&auto=format&fit=crop" alt="The Douro Valley Dream" class="w-full h-64 object-cover">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold" data-name="The Douro Valley Dream">The Douro Valley Dream</h3>
+                        <p class="text-gray-600 mt-2" data-location="Porto">Porto</p>
+                        <div class="ai-description text-gray-700 mt-4 flex-grow min-h-[100px]">Click the button below to generate a story...</div>
+                        <p class="mt-4 font-semibold text-lg gradient-text">€875,000</p>
+                        <button class="generate-story-btn w-full mt-4 bg-gray-200 text-gray-800 font-bold py-3 px-6 rounded-full hover:bg-gray-300 transition-colors">✨ Generate Story</button>
+                    </div>
+                </div>
+                <!-- Property 3 -->
+                <div class="card bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col">
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop" alt="The Algarve Coastal Retreat" class="w-full h-64 object-cover">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold" data-name="The Algarve Coastal Retreat">The Algarve Coastal Retreat</h3>
+                        <p class="text-gray-600 mt-2" data-location="Algarve">Algarve</p>
+                        <div class="ai-description text-gray-700 mt-4 flex-grow min-h-[100px]">Click the button below to generate a story...</div>
+                        <p class="mt-4 font-semibold text-lg gradient-text">€1,200,000</p>
+                        <button class="generate-story-btn w-full mt-4 bg-gray-200 text-gray-800 font-bold py-3 px-6 rounded-full hover:bg-gray-300 transition-colors">✨ Generate Story</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Mojo Section -->
+    <section class="py-20 md:py-32 bg-gray-800 text-white px-4">
+        <div class="container mx-auto grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="text-4xl md:text-5xl font-bold">Why Mojo?</h2>
+                <p class="mt-4 text-lg text-gray-300">We combine global expertise with a deep, personal love for Portugal. When you work with us, you're not just a client—you're family.</p>
+                <div class="mt-8 space-y-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="text-3xl font-black gradient-text">✓</div>
+                        <div>
+                            <h4 class="font-bold text-xl">Unmatched Local Expertise</h4>
+                            <p class="text-gray-400">Our team lives and breathes Portugal. We know the hidden gems, the market trends, and the secret to a perfect pastéis de nata.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <div class="text-3xl font-black gradient-text">✓</div>
+                        <div>
+                            <h4 class="font-bold text-xl">Proven Investment Growth</h4>
+                            <p class="text-gray-400">With rental prices increasing over 30% and a booming economy, we position you for maximum returns.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=2070&auto=format&fit=crop" alt="Team member 1" class="rounded-2xl shadow-lg w-full h-auto object-cover aspect-square">
+                <img src="https://images.unsplash.com/photo-1557862921-37829c790f19?q=80&w=2071&auto=format&fit=crop" alt="Team member 2" class="rounded-2xl shadow-lg w-full h-auto object-cover aspect-square mt-8">
+                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1961&auto=format&fit=crop" alt="Team member 3" class="rounded-2xl shadow-lg w-full h-auto object-cover aspect-square">
+                <div class="bg-gradient-to-br from-[#FF6F61] to-[#FF4500] rounded-2xl flex items-center justify-center p-8 text-center mt-8">
+                    <p class="font-bold text-2xl">Your Team Awaits</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#333333] text-white py-20 px-4">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl md:text-6xl font-black">Ready to Start Your Portugal Story?</h2>
+            <p class="mt-4 text-lg text-gray-300 max-w-2xl mx-auto">Let's find your Mojo. Reach out today for a complimentary consultation and discover what's possible.</p>
+            <button class="mt-8 btn-primary text-white font-bold py-4 px-8 rounded-full text-lg">Let's Talk</button>
+            <div class="mt-16 border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400">&copy; 2025 MOJO Properties. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white">Instagram</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Facebook</a>
+                    <a href="#" class="text-gray-400 hover:text-white">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const startQuizBtn = document.getElementById('startQuizBtn');
+        const quizModal = document.getElementById('quizModal');
+        const quizContent = document.getElementById('quizContent');
+        const storyButtons = document.querySelectorAll('.generate-story-btn');
+
+        // --- Gemini API Helper ---
+        const callGeminiAPI = async (prompt) => {
+            const apiKey = ""; // API key will be provided by the environment
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: [{ role: "user", parts: [{ text: prompt }] }]
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API call failed with status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                    return "Sorry, we couldn't generate a story right now. Please try again later.";
+                }
+            } catch (error) {
+                console.error("Error calling Gemini API:", error);
+                return "An error occurred while generating content.";
+            }
+        };
+
+
+        // --- Property Story Generator ---
+        storyButtons.forEach(button => {
+            button.addEventListener('click', async (e) => {
+                const card = e.target.closest('.card');
+                const descriptionEl = card.querySelector('.ai-description');
+                const propertyName = card.querySelector('[data-name]').dataset.name;
+                const location = card.querySelector('[data-location]').dataset.location;
+
+                // Show loading state and disable button
+                descriptionEl.innerHTML = '<div class="loader"></div>';
+                e.target.disabled = true;
+                e.target.textContent = 'Generating...';
+
+                const prompt = `Write a short, evocative, and appealing real estate description for a property called '${propertyName}' located in ${location}, Portugal. Mention the unique charm of the location and the lifestyle one could live there. Keep it under 70 words and write in a single paragraph.`;
+
+                const story = await callGeminiAPI(prompt);
+                
+                descriptionEl.textContent = story;
+                e.target.style.display = 'none'; // Hide button after generation
+            });
+        });
+
+
+        // --- Quiz Logic ---
+        const quizData = [
+            {
+                question: "What's your ideal Portugal vibe?",
+                options: ["Bustling City Life", "Coastal Ocean Breeze", "Quiet Countryside Charm"],
+                resultKey: "vibe"
+            },
+            {
+                question: "What's your primary goal?",
+                options: ["A Dream Home", "A Smart Investment", "A Bit of Both"],
+                resultKey: "goal"
+            },
+            {
+                question: "When are you looking to start?",
+                options: ["ASAP!", "In the next 6 months", "Just browsing for now"],
+                resultKey: "timeline"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        const userAnswers = {};
+
+        function showQuestion(index) {
+            const questionData = quizData[index];
+            quizContent.innerHTML = `
+                <button id="closeQuizBtn" class="absolute top-4 right-6 text-2xl text-gray-500 hover:text-black">&times;</button>
+                <div class="fade-in">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-8">${questionData.question}</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        ${questionData.options.map(option => `
+                            <button class="quiz-option bg-gray-100 hover:bg-gray-200 p-6 rounded-lg font-semibold text-lg transition-transform hover:scale-105">${option}</button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            document.querySelectorAll('.quiz-option').forEach(button => {
+                button.addEventListener('click', () => handleAnswer(questionData.resultKey, button.textContent));
+            });
+            document.getElementById('closeQuizBtn').addEventListener('click', closeQuiz);
+        }
+
+        function handleAnswer(key, value) {
+            userAnswers[key] = value;
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                showQuestion(currentQuestionIndex);
+            } else {
+                showResults();
+            }
+        }
+
+        async function showResults() {
+            quizContent.innerHTML = `
+                <button id="closeQuizBtn" class="absolute top-4 right-6 text-2xl text-gray-500 hover:text-black">&times;</button>
+                <div class="fade-in">
+                    <h3 class="text-3xl font-bold gradient-text">Thank You!</h3>
+                    <p class="mt-4 text-lg text-gray-700">We're curating your results. Here is a taste of your dream day in Portugal...</p>
+                    <div id="itineraryResult" class="mt-4 text-left bg-gray-50 p-6 rounded-lg min-h-[150px]">
+                        <div class="loader"></div>
+                    </div>
+                    <button id="finishQuizBtn" class="mt-8 btn-primary text-white font-bold py-3 px-8 rounded-full">Close</button>
+                </div>
+            `;
+            document.getElementById('closeQuizBtn').addEventListener('click', closeQuiz);
+            document.getElementById('finishQuizBtn').addEventListener('click', closeQuiz);
+
+            const itineraryPrompt = `Generate a short, dreamy one-day itinerary for someone in Portugal whose preferences are: Vibe: '${userAnswers.vibe}', Goal: '${userAnswers.goal}'. The itinerary should have 3 parts: Morning, Afternoon, and Evening. Make it sound appealing and luxurious. Format the response with headings for each part (e.g., **Morning:**).`;
+            
+            const itinerary = await callGeminiAPI(itineraryPrompt);
+            const itineraryResultEl = document.getElementById('itineraryResult');
+            
+            // Simple markdown to HTML conversion
+            let formattedItinerary = itinerary.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            formattedItinerary = formattedItinerary.replace(/\n/g, '<br>');
+
+            itineraryResultEl.innerHTML = formattedItinerary;
+        }
+
+        function openQuiz() {
+            currentQuestionIndex = 0;
+            quizModal.classList.remove('hidden');
+            showQuestion(currentQuestionIndex);
+        }
+
+        function closeQuiz() {
+            quizModal.classList.add('hidden');
+        }
+
+        startQuizBtn.addEventListener('click', openQuiz);
+        quizModal.addEventListener('click', (e) => {
+            if (e.target === quizModal) {
+                closeQuiz();
+            }
+        });
+
+    </script>
+</body>
+</html>
+
