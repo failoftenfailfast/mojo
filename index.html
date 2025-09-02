@@ -255,7 +255,6 @@
         // List of available videos (compressed, web-friendly)
         const heroVideos = [
             'videos/hero/compressed/portugal-hero-1.mp4',
-            'videos/hero/compressed/portugal-hero-2.mp4',
             'videos/hero/compressed/portugal-hero-3.mp4',
             'videos/hero/compressed/portugal-hero-4.mp4',
             'videos/hero/compressed/portugal-hero-5.mp4'
@@ -264,6 +263,7 @@
         let currentVideoIndex = 0;
         let videoInterval;
         let nextVideo;
+        let hasStarted = false; // ensure we only start the interval once
         
         function preloadNextVideo() {
             const nextIndex = (currentVideoIndex + 1) % heroVideos.length;
@@ -309,11 +309,13 @@
             
             heroVideo.addEventListener('loadeddata', () => {
                 heroVideo.classList.remove('hidden');
-                console.log('Hero video cycling initialized with', heroVideos.length, 'videos');
-                
-                // Start cycling after first video loads
-                preloadNextVideo();
-                videoInterval = setInterval(switchToNextVideo, 5000); // 5 seconds
+                if (!hasStarted) {
+                    hasStarted = true;
+                    console.log('Hero video cycling initialized with', heroVideos.length, 'videos');
+                    // Start cycling after first video loads (only once)
+                    preloadNextVideo();
+                    videoInterval = setInterval(switchToNextVideo, 5000); // 5 seconds
+                }
             });
             
             heroVideo.addEventListener('error', (e) => {
@@ -324,7 +326,10 @@
             // Pause cycling when video is not visible (performance optimization)
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden) {
-                    if (videoInterval) clearInterval(videoInterval);
+                    if (videoInterval) {
+                        clearInterval(videoInterval);
+                        videoInterval = null;
+                    }
                     heroVideo.pause();
                 } else {
                     heroVideo.play().catch(e => console.log('Video play failed:', e));
