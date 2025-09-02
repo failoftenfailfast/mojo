@@ -96,10 +96,8 @@
     <!-- Hero Section -->
     <section class="hero-bg h-screen flex items-center justify-center text-white relative">
         <!-- Video Background -->
-        <video id="heroVideo" class="hero-video hidden" autoplay muted loop playsinline>
-            <source src="videos/hero/portugal-main.mp4" type="video/mp4" media="(min-width: 768px)">
-            <source src="videos/hero/portugal-mobile.mp4" type="video/mp4" media="(max-width: 767px)">
-            Your browser does not support the video tag.
+        <video id="heroVideo" class="hero-video hidden" autoplay muted playsinline>
+            <!-- Video sources will be dynamically loaded by JavaScript -->
         </video>
         <div class="absolute inset-0 bg-black/50 z-10"></div>
         <div class="hero-content relative z-20 text-center px-4">
@@ -251,29 +249,104 @@
         const quizContent = document.getElementById('quizContent');
         const storyButtons = document.querySelectorAll('.generate-story-btn');
 
-        // --- Hero Video Handler ---
+        // --- Hero Video Cycling Handler ---
         const heroVideo = document.getElementById('heroVideo');
         
-        function initializeHeroVideo() {
-            if (heroVideo) {
-                // Try to load and play the video
-                heroVideo.addEventListener('loadeddata', () => {
-                    heroVideo.classList.remove('hidden');
-                    console.log('Hero video loaded successfully');
-                });
-                
-                heroVideo.addEventListener('error', () => {
-                    console.log('Hero video failed to load, using fallback background image');
-                    heroVideo.classList.add('hidden');
-                });
+        // List of available videos in the hero folder
+        const heroVideos = [
+            'videos/hero/12404925_3840_2160_25fps.mp4',
+            'videos/hero/12404925_3840_2160_25fps (1).mp4',
+            'videos/hero/12551106_3840_2160_30fps.mp4',
+            'videos/hero/13397153-uhd_3840_2160_25fps.mp4',
+            'videos/hero/14237349_3840_2160_50fps.mp4',
+            'videos/hero/16544585-uhd_3840_2160_30fps.mp4',
+            'videos/hero/19052362-uhd_3840_2160_25fps.mp4',
+            'videos/hero/19950957-uhd_3840_2160_25fps.mp4',
+            'videos/hero/19951366-uhd_3840_2160_25fps.mp4',
+            'videos/hero/19999735-hd_1920_1080_30fps.mp4',
+            'videos/hero/20508227-uhd_3840_2160_60fps.mp4',
+            'videos/hero/4035574-uhd_3840_2160_30fps.mp4'
+        ];
 
-                // Start loading the video
-                heroVideo.load();
-            }
+        let currentVideoIndex = 0;
+        let videoInterval;
+        let nextVideo;
+        
+        function preloadNextVideo() {
+            const nextIndex = (currentVideoIndex + 1) % heroVideos.length;
+            nextVideo = document.createElement('video');
+            nextVideo.src = heroVideos[nextIndex];
+            nextVideo.load();
         }
 
-        // Initialize video when page loads
-        document.addEventListener('DOMContentLoaded', initializeHeroVideo);
+        function switchToNextVideo() {
+            if (heroVideos.length === 0) return;
+            
+            currentVideoIndex = (currentVideoIndex + 1) % heroVideos.length;
+            const newVideoSrc = heroVideos[currentVideoIndex];
+            
+            // Smooth transition: fade out current video
+            heroVideo.style.opacity = '0.3';
+            
+            setTimeout(() => {
+                heroVideo.src = newVideoSrc;
+                heroVideo.load();
+                heroVideo.play().catch(e => console.log('Video play failed:', e));
+                
+                // Fade back in
+                heroVideo.style.opacity = '1';
+                
+                // Preload the next video for smooth transitions
+                preloadNextVideo();
+            }, 300);
+        }
+
+        function initializeHeroVideoCycling() {
+            if (!heroVideo || heroVideos.length === 0) {
+                console.log('No hero video element or videos found');
+                return;
+            }
+
+            // Set transition CSS for smooth fades
+            heroVideo.style.transition = 'opacity 0.3s ease-in-out';
+            heroVideo.style.opacity = '1';
+            
+            // Load first video
+            heroVideo.src = heroVideos[0];
+            
+            heroVideo.addEventListener('loadeddata', () => {
+                heroVideo.classList.remove('hidden');
+                console.log('Hero video cycling initialized with', heroVideos.length, 'videos');
+                
+                // Start cycling after first video loads
+                preloadNextVideo();
+                videoInterval = setInterval(switchToNextVideo, 5000); // 5 seconds
+            });
+            
+            heroVideo.addEventListener('error', (e) => {
+                console.log('Hero video failed to load:', e, 'trying next video...');
+                switchToNextVideo();
+            });
+
+            // Pause cycling when video is not visible (performance optimization)
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    if (videoInterval) clearInterval(videoInterval);
+                    heroVideo.pause();
+                } else {
+                    heroVideo.play().catch(e => console.log('Video play failed:', e));
+                    if (!videoInterval && heroVideos.length > 1) {
+                        videoInterval = setInterval(switchToNextVideo, 5000);
+                    }
+                }
+            });
+
+            // Start loading the first video
+            heroVideo.load();
+        }
+
+        // Initialize video cycling when page loads
+        document.addEventListener('DOMContentLoaded', initializeHeroVideoCycling);
 
         // --- Gemini API Helper ---
         const callGeminiAPI = async (prompt) => {
