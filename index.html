@@ -54,7 +54,7 @@
             font-size: 1.33em; /* 33% larger than surrounding text */
             display: inline-block;
             line-height: 1.15; /* prevent descender clipping */
-            letter-spacing: normal;
+            letter-spacing: -0.02em; /* tighter kerning */
             padding-bottom: 0.08em; /* extra room for descenders like j */
             overflow: visible;
         }
@@ -103,12 +103,12 @@
     <!-- Header -->
     <header class="absolute top-0 left-0 right-0 z-10 py-6 px-4 md:px-8">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-3xl font-black text-white font-nunito lowercase tracking-tight">mojo</h1>
-            <nav class="hidden md:flex space-x-8 items-center">
-                <a href="#" class="text-white hover:text-gray-200">Services</a>
-                <a href="#" class="text-white hover:text-gray-200">Properties</a>
-                <a href="#" class="text-white hover:text-gray-200">About Us</a>
-                <a href="#" class="text-white bg-white/20 backdrop-blur-sm py-2 px-4 rounded-full hover:bg-white/30">Contact</a>
+            <h1 class="text-3xl font-black font-nunito lowercase tracking-tight gradient-portugal no-clip">mojo</h1>
+            <nav class="hidden md:flex space-x-8 items-center text-white">
+                <a href="#" class="hover:text-gray-200">Services</a>
+                <a href="#" class="hover:text-gray-200">Properties</a>
+                <a href="#" class="hover:text-gray-200">About Us</a>
+                <a href="#" class="bg-white/20 backdrop-blur-sm py-2 px-4 rounded-full hover:bg-white/30">Contact</a>
             </nav>
             <button class="md:hidden text-white text-3xl">☰</button>
         </div>
