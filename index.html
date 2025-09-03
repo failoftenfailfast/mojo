@@ -53,10 +53,12 @@
         .hero-mojo {
             font-size: 1.33em; /* 33% larger than surrounding text */
             display: inline-block;
-            line-height: 0.9;
+            line-height: 1.15; /* prevent descender clipping */
             letter-spacing: normal;
+            padding-bottom: 0.08em; /* extra room for descenders like j */
+            overflow: visible;
         }
-        .no-clip { display: inline-block; padding-right: 0.1em; }
+        .no-clip { display: inline-block; padding-right: 0.1em; padding-bottom: 0.02em; }
         .btn-primary {
             background: linear-gradient(90deg, #FF6F61, #FF4500);
             transition: all 0.3s ease;
